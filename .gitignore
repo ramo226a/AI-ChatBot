@@ -1,0 +1,42 @@
+# Build directories
+build/
+out/
+dist/
+
+# Compiled files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Dependencies
+bin/
+lib/
+include/
+
+# Runtime files
+chatbot
+chatbot.exe
