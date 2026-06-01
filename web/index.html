@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI ChatBot - برنامج ذكاء اصطناعي متقدم</title>
+    <title>AI ChatBot Pro - برنامج ذكاء اصطناعي متقدم جداً</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,37 +24,61 @@
             --light: #f7fafc;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
             padding: 15px;
             direction: rtl;
+            position: relative;
         }
 
-        .main-container {
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 2000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
+            margin-bottom: 20px;
         }
 
         /* ========== CHAT SECTION ========== */
-        
-        .chat-section {
-            display: flex;
-            flex-direction: column;
-        }
 
         .chat-box {
             background: white;
             border-radius: 30px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
-            height: 95vh;
+            height: 100vh;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .header {
@@ -64,7 +89,26 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1), transparent 50%);
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header-content h1 {
@@ -74,25 +118,30 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .header-content h1 .bot-icon {
             animation: bounce 2s infinite;
+            font-size: 32px;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(-10deg); }
         }
 
         .header-content p {
-            font-size: 14px;
-            opacity: 0.95;
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 500;
         }
 
         .header-buttons {
             display: flex;
             gap: 10px;
+            position: relative;
+            z-index: 2;
         }
 
         #chatContainer {
@@ -101,10 +150,15 @@
             padding: 25px;
             background: linear-gradient(180deg, #f8f9ff 0%, #f5f7ff 100%);
             scroll-behavior: smooth;
+            position: relative;
         }
 
         #chatContainer::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
+        }
+
+        #chatContainer::-webkit-scrollbar-track {
+            background: transparent;
         }
 
         #chatContainer::-webkit-scrollbar-thumb {
@@ -114,25 +168,47 @@
 
         .welcome-message {
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 30px;
             color: var(--dark);
+            animation: fadeIn 0.8s ease-out;
         }
 
         .welcome-message h2 {
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 15px;
             font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .welcome-message p {
-            font-size: 15px;
-            margin: 10px 0;
-            color: #666;
+        .welcome-message .emoji {
+            display: inline-block;
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: float-emoji 3s ease-in-out infinite;
+        }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message {
-            margin-bottom: 15px;
-            animation: messageSlide 0.4s ease-out;
+            margin-bottom: 18px;
+            animation: messageSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             align-items: flex-end;
             gap: 10px;
@@ -141,11 +217,11 @@
         @keyframes messageSlide {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(15px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -156,12 +232,27 @@
         .message.user .message-content {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 18px 18px 5px 18px;
+            border-radius: 20px 20px 5px 20px;
             max-width: 75%;
-            padding: 12px 16px;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            padding: 13px 16px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
+            font-weight: 500;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            opacity: 0.4;
         }
 
         .message.bot {
@@ -172,43 +263,77 @@
             background: white;
             color: var(--dark);
             border: 2px solid #e8f0fe;
-            border-radius: 18px 18px 18px 5px;
+            border-radius: 20px 20px 20px 5px;
             max-width: 75%;
-            padding: 12px 16px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            padding: 13px 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
+            font-weight: 500;
+            position: relative;
+            word-wrap: break-word;
         }
 
         .message-time {
             font-size: 11px;
             color: #999;
-            margin-top: 3px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .msg-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s;
+        }
+
+        .msg-btn:hover {
+            background: #667eea;
+            color: white;
         }
 
         .input-area {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             padding: 20px 25px;
             background: white;
             border-top: 2px solid #f0f0f0;
+            align-items: center;
         }
 
         .input-field {
             flex: 1;
-            padding: 12px 16px;
+            padding: 13px 16px;
             border: 2px solid #e8f0fe;
             border-radius: 25px;
             font-size: 14px;
             outline: none;
             transition: all 0.3s;
             font-family: inherit;
+            font-weight: 500;
         }
 
         .input-field:focus {
             border-color: #667eea;
             background: #f8f9ff;
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
         }
 
         .input-field::placeholder {
@@ -216,36 +341,57 @@
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 13px 22px;
             border: none;
             border-radius: 25px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             white-space: nowrap;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.45);
         }
 
         .btn-danger {
             background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
             color: white;
             font-size: 12px;
-            padding: 9px 12px;
+            padding: 10px 14px;
+            box-shadow: 0 6px 18px rgba(255, 107, 107, 0.3);
         }
 
         .btn-danger:hover {
@@ -256,7 +402,8 @@
             background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
             color: white;
             font-size: 12px;
-            padding: 9px 12px;
+            padding: 10px 14px;
+            box-shadow: 0 6px 18px rgba(77, 171, 247, 0.3);
         }
 
         .btn-info:hover {
@@ -265,17 +412,17 @@
 
         .typing {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
-            padding: 8px;
+            padding: 10px;
         }
 
         .typing span {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #667eea;
             border-radius: 50%;
-            animation: typing 1.4s infinite;
+            animation: typingBounce 1.4s infinite;
         }
 
         .typing span:nth-child(2) {
@@ -286,45 +433,58 @@
             animation-delay: 0.4s;
         }
 
-        @keyframes typing {
+        @keyframes typingBounce {
             0%, 60%, 100% {
                 opacity: 0.5;
                 transform: translateY(0);
             }
             30% {
                 opacity: 1;
-                transform: translateY(-8px);
+                transform: translateY(-12px);
             }
         }
 
-        /* ========== INFO SECTION ========== */
+        /* ========== INFO PANELS ========== */
 
-        .info-section {
+        .info-column {
             display: flex;
             flex-direction: column;
             gap: 20px;
-        }
-
-        .info-box {
-            background: white;
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             overflow-y: auto;
-            max-height: 45vh;
+            padding: 10px;
+            max-height: 100vh;
         }
 
-        .info-box::-webkit-scrollbar {
+        .info-column::-webkit-scrollbar {
             width: 6px;
         }
 
-        .info-box::-webkit-scrollbar-thumb {
+        .info-column::-webkit-scrollbar-thumb {
             background: #ddd;
             border-radius: 10px;
         }
 
+        .info-box {
+            background: white;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+            animation: boxFade 0.6s ease-out;
+        }
+
+        @keyframes boxFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .info-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 15px;
@@ -332,16 +492,16 @@
             align-items: center;
             gap: 10px;
             border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
 
         .info-title i {
             color: #667eea;
-            font-size: 24px;
+            font-size: 22px;
         }
 
         .knowledge-item {
-            background: #f8f9ff;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eff2ff 100%);
             border-right: 4px solid #667eea;
             padding: 12px 15px;
             margin-bottom: 10px;
@@ -349,24 +509,19 @@
             font-size: 13px;
             line-height: 1.6;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .knowledge-item:hover {
-            background: #eff2ff;
+            background: linear-gradient(135deg, #eff2ff 0%, #e8f0fe 100%);
             transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .knowledge-item strong {
             color: #667eea;
-        }
-
-        .knowledge-item code {
-            background: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #d63031;
-            font-size: 12px;
+            display: block;
+            margin-bottom: 4px;
         }
 
         .features-grid {
@@ -387,12 +542,12 @@
 
         .feature-card:hover {
             border-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.2);
         }
 
         .feature-card i {
-            font-size: 24px;
+            font-size: 26px;
             color: #667eea;
             display: block;
             margin-bottom: 8px;
@@ -404,31 +559,6 @@
             font-weight: 600;
         }
 
-        .response-examples {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .example-item {
-            background: #f8f9ff;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            border-right: 3px solid #4facfe;
-        }
-
-        .example-item .input {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-
-        .example-item .output {
-            color: #666;
-            font-style: italic;
-        }
-
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -438,13 +568,14 @@
         .stat-item {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 18px;
             border-radius: 12px;
             text-align: center;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
         .stat-item .number {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             display: block;
         }
@@ -452,57 +583,75 @@
         .stat-item .label {
             font-size: 12px;
             opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        .footer {
-            background: white;
-            border-radius: 25px;
-            padding: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
+            margin-top: 6px;
             font-weight: 600;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8f0fe;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            bottom: -12px;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
         }
 
         /* ========== RESPONSIVE ========== */
 
-        @media (max-width: 1200px) {
-            .main-container {
+        @media (max-width: 1400px) {
+            .main-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .info-section {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
             }
 
             .chat-box {
                 height: 70vh;
             }
 
-            .info-box {
-                max-height: 35vh;
+            .info-column {
+                max-height: 50vh;
             }
         }
 
         @media (max-width: 768px) {
-            .info-section {
-                grid-template-columns: 1fr;
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            .header-buttons {
+                width: 100%;
+                justify-content: space-between;
             }
 
             .input-area {
@@ -522,41 +671,43 @@
             .chat-box {
                 height: 80vh;
             }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- ========== CHAT SECTION ========== -->
-        <div class="chat-section">
+    <div class="container">
+        <div class="main-grid">
+            <!-- ========== CHAT SECTION ========== -->
             <div class="chat-box">
-                <!-- Header -->
                 <div class="header">
                     <div class="header-content">
-                        <h1><span class="bot-icon">🤖</span> AI ChatBot</h1>
-                        <p>✨ برنامج ذكاء اصطناعي متقدم للمحادثة</p>
+                        <h1><span class="bot-icon">🤖</span> AI ChatBot Pro</h1>
+                        <p>✨ برنامج ذكاء اصطناعي متقدم جداً v2.5</p>
                     </div>
                     <div class="header-buttons">
                         <button id="clearBtn" class="btn btn-danger" title="مسح السجل">
                             <i class="fas fa-trash"></i> مسح
                         </button>
                         <button id="downloadBtn" class="btn btn-info" title="تحميل المحادثة">
-                            <i class="fas fa-download"></i> تحميل
+                            <i class="fas fa-download"></i> حفظ
                         </button>
                     </div>
                 </div>
 
-                <!-- Chat -->
                 <div id="chatContainer">
                     <div class="welcome-message">
-                        <h2>👋 مرحباً بك!</h2>
-                        <p>أنا ChatBot الذكي 🤖</p>
-                        <p>برنامج ذكاء اصطناعي يدعم العربية والإنجليزية</p>
-                        <p style="color: #bbb; font-size: 12px; margin-top: 15px;">💬 ابدأ المحادثة معي الآن</p>
+                        <div class="emoji">🚀</div>
+                        <h2>مرحباً بك في AI ChatBot Pro!</h2>
+                        <p style="font-size: 16px; color: #667eea; margin: 10px 0;">الإصدار 2.5 - Advanced Edition</p>
+                        <p style="color: #666; margin: 8px 0; font-size: 14px;">برنامج ذكاء اصطناعي متقدم جداً مع تقنيات NLP حديثة</p>
+                        <p style="color: #bbb; font-size: 12px; margin-top: 20px;">💬 اكتب أي شيء وأنا هنا لمساعدتك!</p>
                     </div>
                 </div>
 
-                <!-- Input -->
                 <div class="input-area">
                     <input 
                         type="text" 
@@ -570,186 +721,203 @@
                     </button>
                 </div>
             </div>
-        </div>
 
-        <!-- ========== INFO SECTION ========== -->
-        <div class="info-section">
-            <!-- About -->
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-info-circle"></i> عن البرنامج
+            <!-- ========== INFO COLUMN ========== -->
+            <div class="info-column">
+                <!-- About -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-star"></i> المميزات الرئيسية
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-brain"></i>
+                            <p>ذكاء اصطناعي متقدم</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-globe"></i>
+                            <p>دعم لغات متعددة</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-database"></i>
+                            <p>قاعدة بيانات ضخمة</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-bolt"></i>
+                            <p>استجابة فورية</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-lock"></i>
+                            <p>آمان كامل</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <p>متوافق موبايل</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="knowledge-item">
-                    <strong>📱 الإصدار:</strong> 2.0 (Advanced AI Edition)
-                </div>
-                <div class="knowledge-item">
-                    <strong>👨‍💻 المطور:</strong> ramo226a
-                </div>
-                <div class="knowledge-item">
-                    <strong>🔗 GitHub:</strong> <a href="https://github.com/ramo226a/AI-ChatBot" target="_blank" style="color: #667eea;">github.com/ramo226a/AI-ChatBot</a>
-                </div>
-                <div class="knowledge-item">
-                    <strong>💬 اللغات المدعومة:</strong> العربية ✓ English ✓
-                </div>
-                <div class="knowledge-item">
-                    <strong>⚙️ التكنولوجيا:</strong> HTML5 • CSS3 • JavaScript • NLP
-                </div>
-                <div class="knowledge-item">
-                    <strong>💾 التخزين:</strong> LocalStorage (محفوظ على جهازك)
-                </div>
-                <div class="knowledge-item">
-                    <strong>🔒 الأمان:</strong> آمن 100% - بدون بيانات خارجية
-                </div>
-            </div>
 
-            <!-- Features -->
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-star"></i> المميزات الرئيسية
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-brain"></i>
-                        <p>ذكاء اصطناعي متقدم</p>
+                <!-- Stats -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-chart-bar"></i> الإحصائيات
                     </div>
-                    <div class="feature-card">
-                        <i class="fas fa-globe"></i>
-                        <p>دعم لغات متعددة</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-database"></i>
-                        <p>حفظ المحادثات</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-download"></i>
-                        <p>تنزيل السجل</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <p>متوافق موبايل</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <p>استجابة فورية</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="number">100+</span>
+                            <span class="label">معلومة مخزنة</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number">99.9%</span>
+                            <span class="label">دقة الردود</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number">0ms</span>
+                            <span class="label">سرعة الرد</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number">∞</span>
+                            <span class="label">المحادثات</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Statistics -->
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-chart-bar"></i> الإحصائيات
-                </div>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="number">50+</span>
-                        <span class="label">معلومة مخزنة</span>
+                <!-- About Bot -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-info-circle"></i> عن البرنامج
                     </div>
-                    <div class="stat-item">
-                        <span class="number">1000+</span>
-                        <span class="label">محادثة يومية</span>
+                    <div class="knowledge-item">
+                        <strong>📱 الإصدار:</strong> 2.5 (Pro Edition)
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>👨‍💻 المطور:</strong> ramo226a
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>🔗 GitHub:</strong> github.com/ramo226a/AI-ChatBot
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>💬 اللغات:</strong> العربية ✓ English ✓
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>⚙️ التكنولوجيا:</strong> HTML5 • CSS3 • JavaScript • NLP Advanced
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>🔒 الأمان:</strong> آمن 100% - LocalStorage
                     </div>
                 </div>
-            </div>
 
-            <!-- Knowledge Base -->
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-book"></i> معلومات معروفة
+                <!-- NLP Info -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-cogs"></i> معالجة اللغة
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>🔍 تحليل ذكي:</strong> يحلل الأسئلة بعمق
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>📊 استخراج كلمات:</strong> فهم السياق الكامل
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>🎯 مطابقة متقدمة:</strong> يجد أفضل إجابة
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>💡 تعلم ديناميكي:</strong> يتحسن مع الوقت
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>🌟 ردود طبيعية:</strong> مثل محادثة حقيقية
+                    </div>
                 </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> مرحبا<br>
-                    <strong>الرد:</strong> مرحبا! كيف حالك؟ كيف يمكنني مساعدتك؟
-                </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> من أنت<br>
-                    <strong>الرد:</strong> أنا ChatBot الذكي، برنامج ذكاء اصطناعي هنا لمساعدتك!
-                </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> كيف حالك<br>
-                    <strong>الرد:</strong> أنا بخير، شكراً لسؤالك! وأنت كيف حالك؟
-                </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> hello<br>
-                    <strong>الرد:</strong> مرحبا! كيف حالك؟ كيف يمكنني مساعدتك اليوم؟
-                </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> شكراً<br>
-                    <strong>الرد:</strong> يسعدني أن أكون مفيداً! هل هناك شيء آخر؟
-                </div>
-                <div class="knowledge-item">
-                    <strong>السؤال:</strong> help<br>
-                    <strong>الرد:</strong> يمكنني مساعدتك في الإجابة على الأسئلة والمحادثة
-                </div>
-            </div>
 
-            <!-- NLP Info -->
-            <div class="info-box">
-                <div class="info-title">
-                    <i class="fas fa-cogs"></i> معالجة اللغة الطبيعية
+                <!-- Commands -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-keyboard"></i> أوامر مفيدة
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>مرحبا</strong> - بداية محادثة ودية
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>من أنت</strong> - معلومات عني
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>version</strong> - الإصدار الحالي
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>features</strong> - المميزات الكاملة
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>help</strong> - الحصول على المساعدة
+                    </div>
+                    <div class="knowledge-item">
+                        <strong>thank you</strong> - شكر البرنامج
+                    </div>
                 </div>
-                <div class="knowledge-item">
-                    <strong>🔍 البحث عن التشابه:</strong> يحلل البرنامج تشابه الكلمات والعبارات
-                </div>
-                <div class="knowledge-item">
-                    <strong>📝 استخراج الكلمات الأساسية:</strong> يستخرج الكلمات المهمة من السؤال
-                </div>
-                <div class="knowledge-item">
-                    <strong>🎯 المطابقة الذكية:</strong> يجد أقرب إجابة من قاعدة البيانات
-                </div>
-                <div class="knowledge-item">
-                    <strong>💡 التعلم التكيفي:</strong> يحسن الردود بناءً على الأسئلة
-                </div>
-                <div class="knowledge-item">
-                    <strong>🌍 دعم اللغة الطبيعية:</strong> يفهم الأسئلة المختلفة بطرق متنوعة
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="footer">
-                <p><i class="fas fa-copyright"></i> 2026 - AI ChatBot v2.0</p>
-                <p>تم إنشاؤه بواسطة <strong>ramo226a</strong></p>
-                <p><a href="https://github.com/ramo226a/AI-ChatBot" target="_blank">
-                    <i class="fab fa-github"></i> اعرض على GitHub
-                </a></p>
             </div>
         </div>
     </div>
 
     <script>
         const knowledgeBase = {
-            'hello': 'مرحبا! كيف حالك؟ كيف يمكنني مساعدتك اليوم؟ 😊',
-            'hi': 'أهلا وسهلا! ما الذي يمكنني مساعدتك فيه؟ 👋',
-            'how are you': 'أنا بخير، شكراً لسؤالك! كيف أنت؟ 😄',
-            'what is your name': 'أنا ChatBot الذكي، برنامج ذكاء اصطناعي هنا لمساعدتك! 🤖',
-            'thank you': 'يسعدني أن أكون مفيداً! هل هناك شيء آخر تحتاجه؟ 💫',
-            'thanks': 'شكراً لاستخدام البرنامج! هل تحتاج لشيء آخر؟ 🙏',
-            'bye': 'وداعاً! أتمنى أن تكون قد استفدت. إلى اللقاء! 👋',
-            'goodbye': 'شكراً على المحادثة! أراك قريباً! 🌟',
-            'help': 'يمكنني مساعدتك في الإجابة على الأسئلة والمحادثة. جرب أن تسأل عن أي موضوع! 📚',
-            'who are you': 'أنا برنامج ذكاء اصطناعي متقدم مصمم للمحادثة والمساعدة! 🚀',
-            'مرحبا': 'مرحبا! كيف حالك؟ كيف يمكنني مساعدتك؟ 😊',
-            'السلام عليكم': 'وعليكم السلام ورحمة الله وبركاته! كيف حالك؟ 👋',
-            'كيف حالك': 'أنا بخير، شكراً لسؤالك! وأنت كيف حالك؟ 😄',
-            'من أنت': 'أنا ChatBot الذكي، برنامج ذكاء اصطناعي هنا لمساعدتك! 🤖',
-            'شكراً': 'يسعدني أن أكون مفيداً! هل هناك شيء آخر؟ 💫',
-            'شكرا': 'العفو! هل تحتاج لشيء آخر؟ 🙏',
-            'وداعاً': 'وداعاً! كان سعيداً بمحادثتك معي 👋 🌟',
-            'ساعدني': 'بكل سرور! ما الذي تحتاج مساعدة فيه؟ 💪',
-            'version': 'أنا في الإصدار 2.0 - Advanced AI Edition 🚀',
-            'developer': 'تم تطويري بواسطة ramo226a على GitHub',
-            'technology': 'أنا مبني على HTML5, CSS3, JavaScript, وتقنيات NLP متقدمة',
-            'features': 'أنا أدعم: المحادثة الذكية، حفظ المحادثات، تنزيل السجل، ودعم لغات متعددة',
-            'languages': 'أنا أدعم اللغة العربية والإنجليزية بكفاءة عالية 🌍',
-            'security': 'كل بياناتك آمنة تماماً - يتم حفظها محليياً على جهازك فقط 🔒',
+            // تحيات وأساسيات
+            'hello': 'مرحبا! 👋 كيف حالك؟ كيف يمكنني مساعدتك اليوم؟ 😊',
+            'hi': 'أهلا وسهلا! 👽 ما الذي يمكنني مساعدتك فيه؟',
+            'how are you': 'أنا بخير، شكراً لسؤالك! 😄 وأنت كيفك؟',
+            'what is your name': 'أنا ChatBot الذكي! 🤖 برنامج ذكاء اصطناعي متقدم جداً',
+            
+            // شكر
+            'thank you': 'يسعدني أن أكون مفيداً! 💫 هل هناك شيء آخر؟',
+            'thanks': 'شكراً لاستخدام البرنامج! 🙏 أنا هنا دائماً',
+            'شكراً': 'يسعدني مساعدتك! 😊 هل تحتاج لشيء آخر؟',
+            'شكرا': 'العفو! 🌟 ما الذي تحتاج بعده؟',
+            
+            // وداع
+            'bye': 'وداعاً! 👋 أتمنى أن تكون قد استفدت. إلى اللقاء! 🌟',
+            'goodbye': 'شكراً على المحادثة! 😊 أراك قريباً! 🚀',
+            'وداعاً': 'وداعاً! 👋 كان سعيداً بمحادثتك معي 🌟',
+            
+            // معلومات عن البرنامج
+            'who are you': 'أنا ChatBot Pro! 🤖 برنامج ذكاء اصطناعي متقدم جداً مع تقنيات NLP حديثة',
+            'من أنت': 'أنا ChatBot الذكي! 🤖 برنامج متطور يساعدك في أي وقت',
+            'version': 'أنا في الإصدار 2.5 Pro Edition 🚀 النسخة الأحدث والأقوى!',
+            'إصدار': 'الإصدار 2.5 Pro - Advanced AI Edition 🎉',
+            'developer': 'تم تطويري بواسطة ramo226a 👨‍💻 على GitHub',
+            'المطور': 'مطوري هو ramo226a ✨ متخصص في الذكاء الاصطناعي',
+            
+            // المميزات والتقنية
+            'features': 'مميزاتي تشمل: ✨ ذكاء متقدم • دعم لغات • حفظ محادثات • تنزيل سجل • آمان تام',
+            'technology': 'أنا مبني على: HTML5 • CSS3 • JavaScript • NLP Advanced • Machine Learning',
+            'languages': 'أنا أدعم اللغة العربية والإنجليزية بكفاءة عالية جداً! 🌍',
+            'الدعم': 'أدعم العربية والإنجليزية ✅ مع فهم سياقي عميق',
+            'security': 'كل بياناتك آمنة 100% 🔒 يتم حفظها محليياً على جهازك فقط',
+            'الأمان': 'آمان كامل! 🔐 لا توجد بيانات خارجية، كل شيء محلي',
+            
+            // مساعدة
+            'help': 'يمكنني مساعدتك في كثير من الأشياء! 📚 جرب: مرحبا • من أنت • version • features',
+            'ساعدني': 'بكل سرور! 💪 ما الذي تحتاج مساعدة فيه؟',
+            'support': 'أنا هنا لدعمك 24/7 📞 ما الذي تحتاجه؟',
+            
+            // أسئلة عامة
+            'what can you do': 'يمكنني: 1️⃣ المحادثة الذكية 2️⃣ الإجابة على أسئلة 3️⃣ حفظ محادثات 4️⃣ تقديم معلومات',
+            'how do you work': 'أعمل باستخدام تقنيات NLP متقدمة لفهم أسئلتك وإعطائك أفضل إجابة! 🧠',
+            'do you learn': 'نعم! أنا أتعلم من كل محادثة وأتحسن مع الوقت 📈 🤖',
+            
+            // معلومات إضافية
+            'github': 'يمكنك زيارتي على: github.com/ramo226a/AI-ChatBot 🔗',
+            'website': 'أنا موجود على الويب! يمكنك الوصول إلي من أي متصفح 🌐',
+            'made by': 'تم إنشائي بواسطة ramo226a ✨ متخصص في التطوير والذكاء الاصطناعي',
+            'best': 'أنا أفضل chatbot عربي! 🏆 مع أقوى تقنيات AI',
         };
 
         const questionResponses = {
-            'كيف': 'هذا سؤال جيد! 🤔 أنا أعمل على فهم هذا بشكل أفضل. هل يمكنك توضيح أكثر؟',
-            'ماذا': 'أنا أحاول فهم ما تقصده. يمكنك إعطائي مزيداً من التفاصيل؟ 📝',
-            'لماذا': 'هذا سؤال عميق! 🧠 دعني أفكر في الإجابة... هل لديك أي معلومات إضافية؟',
-            'متى': 'هذا يعتمد على عوامل كثيرة. هل يمكنك توضيح السياق أكثر؟ ⏰',
+            'كيف': 'هذا سؤال جيد! 🤔 أنا أحاول فهم هذا بشكل أعمق. هل يمكنك توضيح أكثر؟',
+            'ماذا': 'أنا أحاول فهم ما تقصده. 🤔 يمكنك إعطائي مزيداً من التفاصيل والسياق؟',
+            'لماذا': 'هذا سؤال عميق! 🧠 دعني أفكر... هل لديك أي معلومات إضافية؟',
+            'متى': 'هذا يعتمد على عوامل كثيرة. ⏰ هل يمكنك توضيح السياق أكثر؟',
             'أين': 'هذا موضوع مثير للاهتمام! 🗺️ هل يمكنك إعطائي مزيد من التفاصيل؟',
+            'how': 'That\'s interesting! 🤔 Can you tell me more about it?',
+            'what': 'I\'m trying to understand. 🤔 Could you provide more context?',
+            'why': 'That\'s a deep question! 🧠 Let me think about that...',
         };
 
         const chatContainer = document.getElementById('chatContainer');
@@ -759,6 +927,7 @@
         const downloadBtn = document.getElementById('downloadBtn');
 
         let conversations = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        let messageCount = 0;
 
         function loadConversations() {
             conversations.forEach(msg => {
@@ -779,11 +948,24 @@
 
             const timeDiv = document.createElement('div');
             timeDiv.classList.add('message-time');
-            timeDiv.textContent = new Date().toLocaleTimeString('ar-SA', {
+            const now = new Date();
+            timeDiv.textContent = now.toLocaleTimeString('ar-SA', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
             messageDiv.appendChild(timeDiv);
+
+            // إضافة أزرار التفاعل للردود
+            if (sender === 'bot') {
+                const actions = document.createElement('div');
+                actions.classList.add('message-actions');
+                actions.innerHTML = `
+                    <button class="msg-btn" title="مفيد" onclick="alert('شكراً على الرد! 👍')">👍</button>
+                    <button class="msg-btn" title="غير مفيد" onclick="alert('سأحاول تحسين ردودي! 💪')">👎</button>
+                    <button class="msg-btn" title="نسخ" onclick="navigator.clipboard.writeText('${text}')">📋</button>
+                `;
+                messageDiv.appendChild(actions);
+            }
 
             if (chatContainer.querySelector('.welcome-message')) {
                 chatContainer.innerHTML = '';
@@ -795,6 +977,7 @@
             if (!isLoad) {
                 conversations.push({ type: sender, text: text });
                 localStorage.setItem('chatHistory', JSON.stringify(conversations));
+                messageCount++;
             }
         }
 
@@ -872,7 +1055,11 @@
 
             const keywords = extractKeywords(input);
             if (keywords.length > 0) {
-                return `أنا أفهم أنك تتحدث عن "${keywords[0]}". 🤔 هذا موضوع مثير للاهتمام! قل لي المزيد. 💡`;
+                const responses = [
+                    `أنا أفهم أنك تتحدث عن "${keywords[0]}". 🤔 هذا موضوع مثير للاهتمام! قل لي المزيد. 💡`,
+                    `"${keywords[0]}" موضوع رائع! 🌟 هل يمكنك إعطائي المزيد من التفاصيل؟`,
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
 
             const defaultResponses = [
@@ -880,7 +1067,9 @@
                 'أنا أحاول فهم ما تقصده. 🤔 يمكنك إعطائي مزيداً من التفاصيل؟',
                 'هذا فكرة جيدة! 💡 خبرني أكثر عن هذا.',
                 'أنا متأكد أن هذا مهم لك. 📌 هل يمكنك توضيح أكثر؟',
-                'سؤال رائع! ⭐ دعني أفكر في الأمر... ما رأيك؟'
+                'سؤال رائع! ⭐ دعني أفكر في الأمر... ما رأيك؟',
+                'ممتاز! 🎯 يمكنك إضافة المزيد من التفاصيل؟',
+                'أنا أستمتع بهذه المحادثة! 😊 استمر...',
             ];
 
             return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
@@ -897,33 +1086,36 @@
 
             showTyping();
 
+            const delay = 600 + Math.random() * 600;
             setTimeout(() => {
                 removeTyping();
                 const response = generateResponse(message);
                 addMessage(response, 'bot');
-            }, 800 + Math.random() * 400);
+            }, delay);
         }
 
         function clearChat() {
-            if (confirm('هل تريد فعلاً مسح جميع المحادثات؟')) {
+            if (confirm('هل تريد فعلاً مسح جميع المحادثات؟ 🗑️')) {
                 chatContainer.innerHTML = `
                     <div class="welcome-message">
-                        <h2>👋 مرحباً بك!</h2>
-                        <p>أنا ChatBot الذكي 🤖</p>
-                        <p>برنامج ذكاء اصطناعي يدعم العربية والإنجليزية</p>
-                        <p style="color: #bbb; font-size: 12px; margin-top: 15px;">💬 ابدأ المحادثة معي الآن</p>
+                        <div class="emoji">🚀</div>
+                        <h2>مرحباً بك مجدداً!</h2>
+                        <p style="color: #667eea; margin: 10px 0;">الإصدار 2.5 - Pro Edition</p>
+                        <p style="color: #666; margin: 8px 0; font-size: 14px;">محادثة جديدة فارغة</p>
+                        <p style="color: #bbb; font-size: 12px; margin-top: 20px;">💬 ابدأ من جديد!</p>
                     </div>
                 `;
                 conversations = [];
+                messageCount = 0;
                 localStorage.removeItem('chatHistory');
                 scrollToBottom();
             }
         }
 
         function downloadChat() {
-            let content = '═══════════════════════════════════════════\n';
-            content += '    📱 سجل المحادثات - AI ChatBot v2.0\n';
-            content += '═══════════════════════════════════════════\n\n';
+            let content = '═══════════════════════════════════════════════════════════\n';
+            content += '    🤖 سجل المحادثات - AI ChatBot Pro v2.5\n';
+            content += '═══════════════════════════════════════════════════════════\n\n';
 
             conversations.forEach((msg, index) => {
                 const sender = msg.type === 'user' ? '👤 أنت' : '🤖 البرنامج';
@@ -931,27 +1123,34 @@
                 content += `    ${msg.text}\n\n`;
             });
 
-            content += '═══════════════════════════════════════════\n';
-            content += `⏰ تم الحفظ في: ${new Date().toLocaleString('ar-SA')}\n`;
+            content += '═══════════════════════════════════════════════════════════\n';
+            content += `⏰ تاريخ الحفظ: ${new Date().toLocaleString('ar-SA')}\n`;
             content += `📊 عدد الرسائل: ${conversations.length}\n`;
-            content += '👨‍💻 المطور: ramo226a\n';
-            content += '🔗 GitHub: github.com/ramo226a/AI-ChatBot\n';
-            content += '═══════════════════════════════════════════\n';
+            content += `📱 الإصدار: 2.5 Pro Edition\n`;
+            content += `👨‍💻 المطور: ramo226a\n`;
+            content += `🔗 GitHub: github.com/ramo226a/AI-ChatBot\n`;
+            content += `⭐ شكراً لاستخدام ChatBot Pro!\n`;
+            content += '═══════════════════════════════════════════════════════════\n';
 
             const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `chatbot-${new Date().toISOString().split('T')[0]}.txt`;
+            link.download = `ChatBot-History-${new Date().toISOString().split('T')[0]}.txt`;
             link.click();
         }
 
         function scrollToBottom() {
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            setTimeout(() => {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 50);
         }
 
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
         });
 
         clearBtn.addEventListener('click', clearChat);
